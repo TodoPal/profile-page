@@ -1,0 +1,20 @@
+<label class="form-control">
+  <div class="label">
+    <span class="label-text text-slate-100">
+      {{ placeholder }}
+    </span>
+  </div>
+  <div class="input input-bordered flex gap-12">
+  <input 
+    type="text"
+    [formControl]="costumeFormControl"
+    [placeholder]="placeholder"
+    [type]="hidePwd && type === 'password' ? 'password' : 'text'"
+  />
+  <button *ngIf="type === 'password'"
+          class="btn btn-circle btn-ghost"
+          (click)="hidePwd = !hidePwd">
+    <ng-icon [name]="hidePwd ? 'heroEye' : 'heroEyeSlash'"></ng-icon>
+  </button>
+  </div>
+</label>

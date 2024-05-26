@@ -1,0 +1,52 @@
+<div class="flex items-center flex-col p-4">
+  <div class="card w-[23rem] bg-base-300 shadow-xl">
+    <div class="card-body">
+      <div class="card-title">
+        <span class="loading loading-spinner w-12" *ngIf="!isAvatarLoaded()"></span>
+        <img src="https://api.dicebear.com/6.x/thumbs/svg?seed={{(profile$ | async)?.username}}"
+          [ngStyle]="{display: !isAvatarLoaded() ? 'none': ''}" (load)="isAvatarLoaded.set(true)" alt="user avatar"
+          class="w-12 rounded-md" />
+        <h2>{{ (profile$ | async)?.username }}</h2>
+      </div>
+      <p>Joined: {{(profile$ | async)?.joined}}</p>
+      <p>Todo created: {{(profile$ | async)?.todosCreated}}</p>
+      <p>Todos with other users: {{(profile$ | async)?.todosWithOthers}}</p>
+
+      <div class="card-actions justify-end">
+        <button class="btn !btn-outline btn-error" onclick="deleteProfileDialog.showModal()">
+          <ng-icon name="heroTrash"></ng-icon>
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirmation modal -->
+<dialog id="deleteProfileDialog" class="modal">
+  <div class="modal-box">
+    <h1 class="font-bold">Are you sure, you want to delete your profile?</h1>
+
+    <my-input 
+      [costumeFormControl]="pwdFormGroup.controls.pwdCtrl"
+      [placeholder]="'Password'" 
+      [minCharacters]="10"
+      class="flex w-fit"
+      type="password" />
+
+    <div class="modal-action">
+      <form method="dialog" class="flex gap-4">
+        <button class="btn">Cancel</button>
+        <button class="btn btn-error" (click)="deleteUser()" [disabled]="!pwdFormGroup.valid">
+          <ng-icon name="heroTrash"></ng-icon>
+          Delete
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- the form with 'modal-backdrop' class, covers the screen so we can close the modal when clicked outside -->
+  <form method="dialog" class="modal-backdrop">
+    <button class="cursor-default">close</button>
+  </form>
+</dialog>
